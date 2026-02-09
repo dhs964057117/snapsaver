@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO: Title & Description -->
+    <title>SnapSaver Browser - 视频嗅探下载器 & 极速浏览器 | Download Video & Music</title>
+    <meta name="description" content="SnapSaver Browser 是一款专业的资源嗅探浏览器。自动检测网页中的 m3u8, mp4 视频、音频与图片，一键批量下载。支持无痕浏览、文件管理，完全免费，保护隐私。">
+    <meta name="keywords" content="视频下载器, 浏览器, 资源嗅探, m3u8下载, mp4下载, 视频抓取, 免费浏览器, 隐私保护, 文件管理, SnapSaver, download, media, browser, privacy">
+    <meta name="author" content="SnapSaver Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- SEO: Canonical URL (Replace with your actual domain) -->
+    <link rel="canonical" href="https://snapsaver.suansuan.dpdns.org//">
+
+    <!-- SEO: Open Graph / Facebook / WeChat Share -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://snapsaver.suansuan.dpdns.org//">
+    <meta property="og:title" content="SnapSaver Browser - 万物皆可嗅探，极速下载">
+    <meta property="og:description" content="自动识别网页视频、图片与文件，畅享极速下载体验。支持 iOS & Android。">
+    <meta property="og:image" content="https://snapsaver.suansuan.dpdns.org//preview-image.jpg"> <!-- Replace with actual image URL -->
+
+    <!-- SEO: Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://snapsaver.suansuan.dpdns.org//">
+    <meta name="twitter:title" content="SnapSaver Browser - Ultimate Video Downloader">
+    <meta name="twitter:description" content="Browse, detect, and download videos instantly with SnapSaver.">
+    <meta name="twitter:image" content="https://snapsaver.suansuan.dpdns.org//preview-image.jpg">
+
+    <!-- SEO: Structured Data (JSON-LD) for Software App -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "SnapSaver Browser",
+            "operatingSystem": "Android, iOS",
+            "applicationCategory": "BrowserApplication",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "A powerful browser with built-in media sniffer to download videos, music, and images from any website.",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "15000"
+            },
+            "featureList": "Media Sniffer, Video, Audio, Music, Image, Ad Blocker, File Manager, Private Browsing, Media Download, Search"
+        }
+    </script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        },
+                        dark: {
+                            bg: '#0f172a',
+                            card: '#1e293b',
+                            border: '#334155',
+                            text: '#f8fafc',
+                            muted: '#94a3b8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+        }
+
+        select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        .dark select {
+             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text transition-colors duration-300 antialiased overflow-x-hidden selection:bg-brand-100 dark:selection:bg-brand-900 selection:text-brand-900 dark:selection:text-brand-100">
+
+<!-- SEO: Fallback content for crawlers without JS -->
+<noscript>
+    <div class="p-4 bg-yellow-100 text-yellow-800">
+        <h1>SnapSaver Browser - Video Downloader</h1>
+        <p>SnapSaver is the best browser for downloading videos from the web. It supports m3u8, mp4, and live streams. No login required, totally free, and secure.</p>
+        <p>SnapSaver 是一款极速资源嗅探浏览器，支持自动检测并下载网页视频、音频和图片。无需登录，永久免费，内置强大的文件管理器和隐私保护模式。</p>
+    </div>
+</noscript>
+
+<!-- Navbar -->
+<header class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+    <div class="glass transition-colors duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer select-none" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 drop-shadow-lg relative">
+                        <!-- Added Title tag for Accessibility/SEO -->
+                        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle">
+                            <title id="logoTitle">SnapSaver Browser Logo</title>
+                            <defs>
+                                <linearGradient id="logoGradient" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#6DD5FA"/>
+                                    <stop offset="0.5" stop-color="#8A73F5"/>
+                                    <stop offset="1" stop-color="#F777B2"/>
+                                </linearGradient>
+                                <linearGradient id="glossGradient" x1="88" y1="88" x2="12" y2="12" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.25"/>
+                                    <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M50 71C38.402 71 29 61.598 29 50C29 38.402 38.402 29 50 29C61.598 29 71 38.402 71 50C71 53.6859 70.1033 57.1712 68.5355 60.1966L84.2929 75.954C85.4645 77.1255 85.4645 79.0251 84.2929 80.1966L80.1966 84.2929C79.0251 85.4645 77.1255 85.4645 75.954 84.2929L60.1966 68.5355C57.1712 70.1033 53.6859 71 50 71ZM88 50V22C88 15.3726 82.6274 10 76 10H24C17.3726 10 12 15.3726 12 22V50C12 70.9868 29.0132 88 50 88C70.9868 88 88 70.9868 88 50ZM50 63C57.1797 63 63 57.1797 63 50C63 42.8203 57.1797 37 50 37C42.8203 37 37 42.8203 37 50C37 57.1797 42.8203 63 50 63Z" fill="url(#logoGradient)"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M50 71C38.402 71 29 61.598 29 50C29 38.402 38.402 29 50 29C61.598 29 71 38.402 71 50C71 53.6859 70.1033 57.1712 68.5355 60.1966L84.2929 75.954C85.4645 77.1255 85.4645 79.0251 84.2929 80.1966L80.1966 84.2929C79.0251 85.4645 77.1255 85.4645 75.954 84.2929L60.1966 68.5355C57.1712 70.1033 53.6859 71 50 71ZM88 50V22C88 15.3726 82.6274 10 76 10H24C17.3726 10 12 15.3726 12 22V50C12 70.9868 29.0132 88 50 88C70.9868 88 88 70.9868 88 50ZM50 63C57.1797 63 63 57.1797 63 50C63 42.8203 57.1797 37 50 37C42.8203 37 37 42.8203 37 50C37 57.1797 42.8203 63 50 63Z" fill="url(#glossGradient)"/>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight">SnapSaver</span>
+                </div>
+
+                <!-- Desktop Controls -->
+                <div class="hidden md:flex items-center gap-6">
+                    <nav class="flex gap-6 mr-4" aria-label="Main Navigation">
+                        <a href="#features" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors" data-i18n="nav_features">Features</a>
+                        <a href="#how-it-works" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors" data-i18n="nav_guide">Guide</a>
+                        <a href="#faq" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors" data-i18n="nav_faq">FAQ</a>
+                    </nav>
+
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+                    <!-- Language Selector -->
+                    <div class="relative group">
+                        <select id="lang-select" aria-label="Select Language" onchange="changeLanguage(this.value)" class="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-brand-500 focus:outline-none cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors max-w-[140px] truncate">
+                            <option value="zh-CN">简体中文</option>
+                            <option value="zh-HK">繁體中文</option>
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option disabled>──────────</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="ru">Русский</option>
+                            <option value="pt">Português</option>
+                            <option value="it">Italiano</option>
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="nl">Nederlands</option>
+                            <option value="bg">Български</option>
+                            <option value="cs">Čeština</option>
+                            <option value="da">Dansk</option>
+                            <option value="el">Ελληνικά</option>
+                            <option value="et">Eesti</option>
+                            <option value="fi">Suomi</option>
+                            <option value="hu">Magyar</option>
+                            <option value="lt">Lietuvių</option>
+                            <option value="lv">Latviešu</option>
+                        </select>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()" aria-label="Toggle Dark Mode" class="p-2 rounded-lg text-slate-500 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all" title="Toggle Theme">
+                        <svg id="icon-light" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="icon-dark" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        <svg id="icon-system" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <button onclick="toggleTheme()" aria-label="Toggle Dark Mode" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                    </button>
+                    <button id="mobile-menu-btn" aria-label="Open Menu" class="text-slate-600 dark:text-slate-300">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 absolute w-full transition-all duration-300">
+        <div class="px-4 pt-2 pb-6 space-y-2">
+            <a href="#features" class="block px-3 py-3 font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" data-i18n="nav_features">Features</a>
+            <a href="#how-it-works" class="block px-3 py-3 font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" data-i18n="nav_guide">Guide</a>
+            <a href="#faq" class="block px-3 py-3 font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg" data-i18n="nav_faq">FAQ</a>
+            <div class="px-3 py-3">
+                <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wider">Language</label>
+                <select onchange="changeLanguage(this.value)" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg py-3 px-3 text-slate-800 dark:text-slate-200">
+                    <option value="zh-CN">简体中文</option>
+                    <option value="zh-HK">繁體中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <!-- Mobile Complete List -->
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="ru">Русский</option>
+                    <option value="pt">Português</option>
+                    <option value="it">Italiano</option>
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="nl">Nederlands</option>
+                    <option value="bg">Български</option>
+                    <option value="cs">Čeština</option>
+                    <option value="da">Dansk</option>
+                    <option value="el">Ελληνικά</option>
+                    <option value="et">Eesti</option>
+                    <option value="fi">Suomi</option>
+                    <option value="hu">Magyar</option>
+                    <option value="lt">Lietuvių</option>
+                    <option value="lv">Latviešu</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Wrap Main Content for SEO Semantics -->
+<main>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-0 left-1/2 w-full -translate-x-1/2 h-full z-0 pointer-events-none">
+            <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-brand-200 dark:bg-brand-900/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-pulse-slow"></div>
+            <div class="absolute top-40 left-10 w-[400px] h-[400px] bg-purple-200 dark:bg-purple-900/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+                <!-- Hero Text -->
+                <div class="flex-1 text-center lg:text-left space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-50 dark:bg-brand-900/30 border border-brand-100 dark:border-brand-800 text-brand-700 dark:text-brand-300 text-sm font-semibold mb-2">
+                            <span class="relative flex h-2 w-2">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                            </span>
+                        v1.0.0 Stable Release
+                    </div>
+
+                    <h1 class="text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+                        <span data-i18n="hero_title_1">Discover Content.</span><br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-purple-600 dark:from-brand-400 dark:to-purple-400" data-i18n="hero_title_2">Download Instantly.</span>
+                    </h1>
+
+                    <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed" data-i18n="hero_desc">
+                        SnapSaver auto-detects videos, music, and images on any webpage. One click to download and save offline.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="https://play.google.com/store/apps/details?id=com.awesome.dhs.tools.snapsave&pcampaignid=web_share"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="flex items-center gap-3 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 px-8 py-4 rounded-2xl transition-all shadow-xl hover:-translate-y-1 min-w-[200px] justify-center"
+                           aria-label="Download from Google Play">
+                            <svg t="1770456568708" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5420" width="24" height="24"><path d="M478.272 489.6192L45.4848 940.064C59.52 987.6288 104.4928 1024 157.888 1024c22.4832 0 42.1568-5.5936 59.0144-16.7872l489.0048-276.9856-227.6352-240.608z" fill="#EA4335" p-id="5421"></path><path d="M916.6976 411.2768l-210.784-120.3072-236.0704 207.04 238.8864 232.2176 210.7776-117.504c36.5312-19.584 61.824-58.752 61.824-100.7232-2.8096-41.9648-28.096-81.1392-64.64-100.7232z" fill="#FBBC04" p-id="5422"></path><path d="M45.4784 83.936c-2.816 8.3904-2.816 19.584-2.816 30.7712v797.376c0 11.2 0 19.584 2.816 30.784l449.664-439.2576-449.664-419.6736z" fill="#4285F4" p-id="5423"></path><path d="M481.088 512l224.832-221.0304L219.712 16.7872C202.8608 5.5936 180.3776 0 157.8944 0 104.4928 0 56.7168 36.3712 45.4784 83.936L481.088 512z" fill="#34A853" p-id="5424"></path></svg>
+                            <div class="text-left">
+                                <div class="text-xs font-light opacity-80">Download on the</div>
+                                <div class="text-sm font-bold">Google Play</div>
+                            </div>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1o9HyO9b-3TQme_eRBsMzLJGTkqVi94Qk/view?usp=sharing"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="flex items-center gap-3 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 px-8 py-4 rounded-2xl transition-all shadow-xl hover:-translate-y-1 min-w-[200px] justify-center"
+                           aria-label="Download">
+                            <svg t="1770522915677" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11164" width="24" height="24"><path d="M99.555556 113.777778m170.666666 0l483.555556 0q170.666667 0 170.666666 170.666666l0 483.555556q0 170.666667-170.666666 170.666667l-483.555556 0q-170.666667 0-170.666666-170.666667l0-483.555556q0-170.666667 170.666666-170.666666Z" fill="#E4DCD5" p-id="11165"></path><path d="M99.555556 113.777778m170.666666 0l483.555556 0q170.666667 0 170.666666 170.666666l0 312.888889q0 170.666667-170.666666 170.666667l-483.555556 0q-170.666667 0-170.666666-170.666667l0-312.888889q0-170.666667 170.666666-170.666666Z" fill="#FEF6EE" p-id="11166"></path><path d="M184.888889 184.888889m113.777778 0l426.666666 0q113.777778 0 113.777778 113.777778l0 256q0 113.777778-113.777778 113.777777l-426.666666 0q-113.777778 0-113.777778-113.777777l0-256q0-113.777778 113.777778-113.777778Z" fill="#D6CBC4" p-id="11167"></path><path d="M184.888889 341.333333m113.777778 0l426.666666 0q113.777778 0 113.777778 113.777778l0 99.555556q0 113.777778-113.777778 113.777777l-426.666666 0q-113.777778 0-113.777778-113.777777l0-99.555556q0-113.777778 113.777778-113.777778Z" fill="#E4DCD5" p-id="11168"></path><path d="M398.222222 99.555556h227.555556v298.666666H398.222222z" fill="#FF6400" p-id="11169"></path><path d="M768 398.222222v42.666667L563.2 668.444444h-102.4L256 440.888889v-42.666667h512z" fill="#933129" p-id="11170"></path><path d="M768 398.222222L524.8 668.444444h-25.6L256 398.222222h512z" fill="#FF6400" p-id="11171"></path></svg>                            <div class="text-left">
+                                <div class="text-xs font-light opacity-80">Download on the</div>
+                                <div class="text-sm font-bold">Browser</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Phone Mockup -->
+                <div class="flex-1 w-full max-w-md lg:max-w-full relative animate-float">
+                    <div class="relative mx-auto border-slate-800 bg-slate-800 border-[14px] rounded-[2.5rem] h-[600px] w-[320px] shadow-2xl overflow-hidden">
+                        <div class="rounded-[2rem] overflow-hidden w-full h-full bg-slate-50 dark:bg-slate-900 flex flex-col relative transition-colors duration-300">
+                            <!-- Status Bar -->
+                            <div class="h-8 w-full bg-white dark:bg-slate-900 flex justify-between items-center px-6 pt-2 transition-colors">
+                                <div class="text-[10px] font-bold dark:text-white">9:41</div>
+                                <div class="flex gap-1"><div class="w-3 h-3 bg-black dark:bg-white rounded-full text-[8px] flex items-center justify-center text-white dark:text-black">5G</div></div>
+                            </div>
+
+                            <!-- Address Bar -->
+                            <div class="bg-white dark:bg-slate-800 px-4 py-2 border-b border-slate-100 dark:border-slate-700 shadow-sm z-10 transition-colors">
+                                <div class="bg-slate-100 dark:bg-slate-700 rounded-full px-4 py-2 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-300">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    snapsaver.app/demo
+                                </div>
+                            </div>
+
+                            <!-- Content Area -->
+                            <div class="flex-1 p-4 overflow-hidden relative">
+                                <div class="w-full h-40 bg-gray-900 rounded-lg mb-4 flex items-center justify-center relative group overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-500 to-blue-500 opacity-50"></div>
+                                    <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center relative z-10">
+                                        <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                    <div class="absolute top-2 right-2 bg-brand-600 text-white text-[10px] px-2 py-1 rounded-full animate-bounce">
+                                        Found 3 Files
+                                    </div>
+                                </div>
+                                <div class="h-4 w-3/4 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
+                                <div class="h-4 w-1/2 bg-slate-200 dark:bg-slate-700 rounded mb-6"></div>
+
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="h-24 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                                    <div class="h-24 bg-slate-200 dark:bg-slate-700 rounded-lg"></div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Sheet -->
+                            <div class="absolute bottom-0 w-full bg-white dark:bg-slate-800 rounded-t-3xl shadow-[0_-5px_20px_rgba(0,0,0,0.3)] p-5 transition-colors">
+                                <div class="w-12 h-1 bg-slate-200 dark:bg-slate-600 rounded-full mx-auto mb-4"></div>
+                                <div class="flex items-center gap-3 mb-3 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-700">
+                                    <div class="w-8 h-8 bg-brand-100 dark:bg-brand-900 rounded flex items-center justify-center text-brand-600 dark:text-brand-300">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold text-slate-700 dark:text-slate-200">Cool_Video_HD.mp4</div>
+                                        <div class="text-[10px] text-brand-600 dark:text-brand-400">Downloading... 85%</div>
+                                    </div>
+                                    <div class="w-6 h-6 flex items-center justify-center">
+                                        <div class="animate-spin rounded-full h-4 w-4 border-2 border-brand-500 border-t-transparent"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid (8 Items) -->
+    <section id="features" class="py-20 bg-white dark:bg-slate-900/50 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-brand-600 dark:text-brand-400 font-semibold tracking-wide uppercase text-sm mb-2" data-i18n="feat_subtitle">Core Power</h2>
+                <h3 class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white mb-4" data-i18n="feat_title">Designed for Downloaders</h3>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 1. Sniffer -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f1_title">Smart Sniffer</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f1_desc">Auto-detects playable media on web pages. Support for M3U8, MP4, and image galleries.</p>
+                </div>
+
+                <!-- 2. Massive Support -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f2_title">Massive Support</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f2_desc">Supports thousands of websites. Compatible with mainstream video and audio formats.</p>
+                </div>
+
+                <!-- 3. Download Manager -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f5_title">File Manager</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f5_desc">Powerful built-in manager. Zip/unzip files, rename, and organize your collection.</p>
+                </div>
+
+                <!-- 4. 3x Speed -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f4_title">3x Speed</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f4_desc">Multi-threaded technology increases download speeds by up to 300%.</p>
+                </div>
+
+                <!-- 5. No Login -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f3_title">No Login</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f3_desc">No registration needed. Start downloading instantly without account binding.</p>
+                </div>
+
+                <!-- 6. Incognito Mode -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f6_title">Incognito Mode</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f6_desc">Browse privately. History, cookies, and cache are automatically cleared upon exit.</p>
+                </div>
+
+                <!-- 7. Free & Freedom -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-pink-100 dark:bg-pink-900/50 text-pink-600 dark:text-pink-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f7_title">Free & Open</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f7_desc">Core features are 100% free forever. Experience the internet without barriers.</p>
+                </div>
+
+                <!-- 8. Global Languages -->
+                <div class="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-brand-50 dark:hover:bg-slate-700 transition-colors group border border-slate-100 dark:border-slate-700">
+                    <div class="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/50 text-cyan-600 dark:text-cyan-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="f8_title">20+ Languages</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="f8_desc">Localized for the world. Native support for 20+ languages.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guide Section -->
+    <section id="how-it-works" class="py-20 bg-slate-50 dark:bg-slate-900 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-6" data-i18n="guide_title">3 Steps to Download</h2>
+                    <div class="space-y-8">
+                        <div class="flex gap-4 group">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">1</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1" data-i18n="guide_step1">Browse Website</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="guide_step1_desc">Use the built-in browser to visit your favorite video or social media sites.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 group">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">2</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1" data-i18n="guide_step2">Auto Detection</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="guide_step2_desc">The download icon will light up automatically when media is detected.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 group">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">3</div>
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1" data-i18n="guide_step3">One-Click Save</h4>
+                                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="guide_step3_desc">Tap the resource list to start downloading. Files are saved to the app manager.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Visuals Column -->
+                <div class="lg:w-1/2">
+                    <div class="relative rounded-3xl bg-slate-100 dark:bg-slate-800/50 p-8 border border-slate-200 dark:border-slate-700 shadow-2xl">
+                        <!-- Background blobs for ambiance -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-brand-500/10 dark:bg-brand-500/20 rounded-full blur-3xl -z-10"></div>
+
+                        <div class="grid grid-cols-3 gap-4 items-center">
+                            <!-- Step 1 Image -->
+                            <div class="transform translate-y-4 hover:translate-y-0 transition-transform duration-500">
+                                <img src="browse-web-fast.png" alt="Browse" class="w-full aspect-[9/19] object-cover rounded-xl shadow-lg border-4 border-white dark:border-slate-700 bg-slate-200" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'w-full aspect-[9/19] rounded-xl shadow-lg border-4 border-white dark:border-slate-700 bg-slate-200 flex items-center justify-center text-xs text-slate-400\'>Image 1</div>'">
+                                <p class="text-center text-xs font-bold mt-3 text-slate-500 dark:text-slate-400">Browse</p>
+                            </div>
+
+                            <!-- Step 2 Image (Featured/Center) -->
+                            <div class="transform -translate-y-4 hover:-translate-y-6 transition-transform duration-500 z-10">
+                                <img src="find-download.png" alt="Download" class="w-full aspect-[9/19] object-cover rounded-xl shadow-2xl shadow-brand-500/20 border-4 border-brand-500/20 dark:border-brand-400/20 bg-brand-50" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'w-full aspect-[9/19] rounded-xl shadow-2xl border-4 border-brand-500/20 bg-brand-50 flex items-center justify-center text-xs text-brand-500\'>Image 2</div>'">
+                                <div class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-[10px] px-2 py-1 rounded-full shadow-lg">Auto-Detect</div>
+                            </div>
+
+                            <!-- Step 3 Image -->
+                            <div class="transform translate-y-4 hover:translate-y-0 transition-transform duration-500">
+                                <img src="manage-play.png" alt="Manage" class="w-full aspect-[9/19] object-cover rounded-xl shadow-lg border-4 border-white dark:border-slate-700 bg-slate-200" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'w-full aspect-[9/19] rounded-xl shadow-lg border-4 border-white dark:border-slate-700 bg-slate-200 flex items-center justify-center text-xs text-slate-400\'>Image 3</div>'">
+                                <p class="text-center text-xs font-bold mt-3 text-slate-500 dark:text-slate-400">Enjoy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-white dark:bg-slate-900/50 transition-colors">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white text-center mb-12" data-i18n="faq_title">Frequently Asked Questions</h2>
+
+            <div class="space-y-6">
+                <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-brand-300 dark:hover:border-brand-600 transition-colors">
+                    <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2" data-i18n="faq_q1">Is SnapSaver free?</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="faq_a1">Yes, core features are completely free. We also offer a Pro version for heavy users without ads.</p>
+                </div>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-brand-300 dark:hover:border-brand-600 transition-colors">
+                    <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2" data-i18n="faq_q2">What sites are supported?</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="faq_a2">We support universal protocols like HLS (m3u8) and MP4. This covers most video websites.</p>
+                </div>
+                <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-6 hover:border-brand-300 dark:hover:border-brand-600 transition-colors">
+                    <h4 class="font-bold text-lg text-slate-800 dark:text-slate-200 mb-2" data-i18n="faq_q3">Do I need to register?</h4>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="faq_a3">No account required. We prioritize your privacy and convenience. Just download and go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rich Call to Action (Restored from v1 with Dark Mode support) -->
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-600 dark:bg-brand-900 rounded-3xl p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl transition-colors">
+                <!-- Decorative Circles -->
+                <div class="absolute top-0 left-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-white opacity-10 rounded-full translate-x-1/3 translate-y-1/3"></div>
+
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 relative z-10" data-i18n="cta_title">Ready to experience fast downloading?</h2>
+                <p class="text-brand-100 dark:text-brand-200 text-lg mb-8 max-w-2xl mx-auto relative z-10" data-i18n="cta_desc">
+                    Join millions of users managing their web resources with SnapSaver today.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                    <a href="https://play.google.com/store/apps/details?id=com.awesome.dhs.tools.snapsave&pcampaignid=web_share"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="bg-white text-brand-600 px-8 py-3 rounded-xl font-bold hover:bg-slate-100 transition-colors shadow-lg"
+                       aria-label="Download Android Version">
+                        Download Android
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="font-bold text-xl text-slate-900 dark:text-white">SnapSaver</span>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-4" data-i18n="footer_text">© 2024 SnapSaver Browser. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- LOGIC SCRIPT -->
+<script>
+    // --- 1. THEME MANAGEMENT ---
+    const themeIcons = {
+        light: document.getElementById('icon-light'),
+        dark: document.getElementById('icon-dark'),
+        system: document.getElementById('icon-system')
+    };
+
+    let currentThemeState = localStorage.getItem('theme') || 'system';
+
+    function applyTheme(theme) {
+        const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', isDark);
+
+        // Update Icons
+        Object.values(themeIcons).forEach(el => el.classList.add('hidden'));
+        themeIcons[theme].classList.remove('hidden');
+    }
+
+    function toggleTheme() {
+        if (currentThemeState === 'system') currentThemeState = 'light';
+        else if (currentThemeState === 'light') currentThemeState = 'dark';
+        else currentThemeState = 'system';
+
+        localStorage.setItem('theme', currentThemeState);
+        applyTheme(currentThemeState);
+    }
+
+    applyTheme(currentThemeState);
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (currentThemeState === 'system') applyTheme('system');
+    });
+
+
+    // --- 2. MULTI-LANGUAGE MANAGEMENT ---
+    // Complete translations for all 20+ requested languages
+    const translations = {
+        "en": {
+            "nav_features": "Features", "nav_guide": "Guide", "nav_faq": "FAQ",
+            "hero_title_1": "Discover Content.", "hero_title_2": "Download Instantly.",
+            "hero_desc": "SnapSaver auto-detects videos, music, and images on any webpage. One click to download and save offline.",
+            "feat_subtitle": "Core Power", "feat_title": "Designed for Downloaders",
+            "f1_title": "Smart Sniffer", "f1_desc": "Auto-detects playable media on web pages. Support for M3U8, MP4, and images.",
+            "f2_title": "Massive Support", "f2_desc": "Supports thousands of websites. Compatible with mainstream video and audio formats.",
+            "f3_title": "No Login", "f3_desc": "No registration needed. Start downloading instantly without account binding.",
+            "f4_title": "3x Speed", "f4_desc": "Multi-threaded technology increases download speeds by up to 300%.",
+            "f5_title": "File Manager", "f5_desc": "Powerful built-in manager. Zip/unzip files, rename, and organize your collection.",
+            "f6_title": "Incognito Mode", "f6_desc": "Browse privately. History, cookies, and cache are automatically cleared upon exit.",
+            "f7_title": "Free & Open", "f7_desc": "Core features are 100% free forever. Experience the internet without barriers.",
+            "f8_title": "20+ Languages", "f8_desc": "Localized for the world. Native support for 20+ languages.",
+            "guide_title": "3 Steps to Download",
+            "guide_step1": "Browse Website", "guide_step1_desc": "Use the built-in browser to visit your favorite video or social media sites.",
+            "guide_step2": "Auto Detection", "guide_step2_desc": "The download icon will light up automatically when media is detected.",
+            "guide_step3": "One-Click Save", "guide_step3_desc": "Tap the resource list to start downloading. Files are saved to the app manager.",
+            "faq_title": "Frequently Asked Questions",
+            "faq_q1": "Is SnapSaver free?", "faq_a1": "Yes, core features are completely free. We also offer a Pro version for heavy users without ads.",
+            "faq_q2": "What sites are supported?", "faq_a2": "We support universal protocols like HLS (m3u8) and MP4. This covers most video websites.",
+            "faq_q3": "Do I need to register?", "faq_a3": "No account required. We prioritize your privacy and convenience. Just download and go.",
+            "cta_title": "Ready to experience fast downloading?", "cta_desc": "Join millions of users managing their web resources with SnapSaver today.",
+            "footer_text": "© 2024 SnapSaver Browser. All rights reserved."
+        },
+        "zh-CN": {
+            "nav_features": "功能特性", "nav_guide": "使用指南", "nav_faq": "常见问题",
+            "hero_title_1": "万物皆可嗅探", "hero_title_2": "极速下载体验",
+            "hero_desc": "SnapSaver 自动识别网页中的视频、音频与图片。一键批量下载，让网络资源触手可及。",
+            "feat_subtitle": "核心能力", "feat_title": "为下载而生的浏览器",
+            "f1_title": "智能嗅探", "f1_desc": "浏览时自动检测页面资源，支持 M3U8, MP4 及高清图集。",
+            "f2_title": "海量支持", "f2_desc": "完美兼容数千个主流视频网站。支持 m3u8, mp4 直播流与点播。",
+            "f3_title": "无需登录", "f3_desc": "拒绝繁琐注册，打开即用。我们尊重隐私，无需绑定账号。",
+            "f4_title": "3倍提速", "f4_desc": "采用多线程分片下载技术，速度提升高达 300%。",
+            "f5_title": "下载管理", "f5_desc": "内置强大管理器。支持文件解压/压缩、重命名及分类整理。",
+            "f6_title": "无痕浏览", "f6_desc": "隐私保护模式。退出后自动清除历史记录、Cookies 和缓存。",
+            "f7_title": "自由免费", "f7_desc": "核心功能永久免费。无门槛畅游网络，自由下载。",
+            "f8_title": "20多种语言", "f8_desc": "全球化适配。原生支持中文、英语、日语等20多种语言。",
+            "guide_title": "只需三步，轻松下载",
+            "guide_step1": "内置浏览器访问", "guide_step1_desc": "使用 SnapSaver 访问您喜欢的视频网站或社交媒体平台。",
+            "guide_step2": "自动嗅探资源", "guide_step2_desc": "当页面加载视频或图片时，底部下载图标会自动亮起并显示资源数量。",
+            "guide_step3": "一键下载保存", "guide_step3_desc": "点击列表中的资源即可开始下载。支持后台运行，完成后自动保存。",
+            "faq_title": "常见问题",
+            "faq_q1": "SnapSaver 是免费的吗？", "faq_a1": "是的，核心功能完全免费。我们提供无广告的 Pro 版本供重度用户选择。",
+            "faq_q2": "支持哪些网站？", "faq_a2": "我们支持通用的 HLS (m3u8), MP4 协议。绝大多数包含视频播放器的网站都可以被嗅探到。",
+            "faq_q3": "需要注册账号吗？", "faq_a3": "完全不需要。保护隐私，即开即用。",
+            "cta_title": "准备好体验极速下载了吗？", "cta_desc": "立即加入数百万用户的行列，使用 SnapSaver 管理您的网络资源。",
+            "footer_text": "© 2024 SnapSaver Browser. 版权所有。"
+        },
+        "zh-HK": {
+            "nav_features": "功能特色", "nav_guide": "使用指南", "nav_faq": "常見問題",
+            "hero_title_1": "萬物皆可嗅探", "hero_title_2": "極速下載體驗",
+            "hero_desc": "SnapSaver 自動識別網頁中的視頻、音頻與圖片。一鍵批量下載，讓網絡資源觸手可及。",
+            "feat_subtitle": "核心能力", "feat_title": "為下載而生的瀏覽器",
+            "f1_title": "智能嗅探", "f1_desc": "瀏覽時自動檢測頁面資源，支持 M3U8, MP4 及高清圖集。",
+            "f2_title": "海量支持", "f2_desc": "完美兼容數千個主流視頻網站。支持 m3u8, mp4 直播流與點播。",
+            "f3_title": "無需登錄", "f3_desc": "拒絕繁瑣註冊，打開即用。我們尊重隱私，無需綁定賬號。",
+            "f4_title": "3倍提速", "f4_desc": "採用多線程分片下載技術，速度提升高達 300%。",
+            "f5_title": "下載管理", "f5_desc": "內置強大管理器。支持文件解壓/壓縮、重命名及分類整理。",
+            "f6_title": "無痕瀏覽", "f6_desc": "隱私保護模式。退出後自動清除歷史記錄、Cookies 和緩存。",
+            "f7_title": "自由免費", "f7_desc": "核心功能永久免費。無門檻暢遊網絡，自由下載。",
+            "f8_title": "20多種語言", "f8_desc": "全球化適配。原生支持中文、英語、日語等20多種語言。",
+            "guide_title": "只需三步，輕鬆下載",
+            "guide_step1": "內置瀏覽器訪問", "guide_step1_desc": "使用 SnapSaver 訪問您喜歡的視頻網站或社交媒體平台。",
+            "guide_step2": "自動嗅探資源", "guide_step2_desc": "當頁面加載視頻或圖片時，底部下載圖標會自動亮起並顯示資源數量。",
+            "guide_step3": "一鍵下載保存", "guide_step3_desc": "點擊列表中的資源即可開始下載。支持後台運行，完成後自動保存。",
+            "faq_title": "常見問題",
+            "faq_q1": "SnapSaver 是免費的嗎？", "faq_a1": "是的，核心功能完全免費。我們提供無廣告的 Pro 版本供重度用戶選擇。",
+            "faq_q2": "支持哪些網站？", "faq_a2": "我們支持通用的 HLS (m3u8), MP4 協議。絕大多數包含視頻播放器的網站都可以被嗅探到。",
+            "faq_q3": "需要註冊賬號嗎？", "faq_a3": "完全不需要。保護隱私，即開即用。",
+            "cta_title": "準備好體驗極速下載了嗎？", "cta_desc": "立即加入數百萬用戶的行列，使用 SnapSaver 管理您的網絡資源。",
+            "footer_text": "© 2024 SnapSaver Browser. 版權所有。"
+        },
+        "ja": {
+            "nav_features": "機能", "nav_guide": "ガイド", "nav_faq": "FAQ",
+            "hero_title_1": "コンテンツを発見", "hero_title_2": "瞬時にダウンロード",
+            "hero_desc": "SnapSaverはWebページ上の動画や画像を自動検出します。ワンクリックで保存できます。",
+            "feat_subtitle": "コア機能", "feat_title": "ダウンロード専用ブラウザ",
+            "f1_title": "スマート検出", "f1_desc": "Webページ上のメディアを自動検出。M3U8、MP4に対応。",
+            "f2_title": "大規模なサポート", "f2_desc": "数千のWebサイトをサポート。主流のビデオ形式と互換性があります。",
+            "f3_title": "ログイン不要", "f3_desc": "登録不要。アカウントのバインドなしでダウンロードを開始できます。",
+            "f4_title": "3倍速", "f4_desc": "マルチスレッド技術により、ダウンロード速度が最大300%向上します。",
+            "f5_title": "ファイル管理", "f5_desc": "強力なファイルマネージャー内蔵。圧縮、名前変更、整理が簡単。",
+            "f6_title": "シークレットモード", "f6_desc": "プライベートブラウジング。終了時に履歴、Cookie、キャッシュを消去します。",
+            "f7_title": "完全無料", "f7_desc": "コア機能は永久に100%無料です。障壁なくインターネットを体験してください。",
+            "f8_title": "20以上の言語", "f8_desc": "世界中にローカライズ。20以上の言語をネイティブサポート。",
+            "guide_title": "ダウンロードの3ステップ",
+            "guide_step1": "ウェブサイトを閲覧", "guide_step1_desc": "内蔵ブラウザを使用して、お気に入りのサイトにアクセスします。",
+            "guide_step2": "自動検出", "guide_step2_desc": "メディアが検出されると、ダウンロードアイコンが自動的に点灯します。",
+            "guide_step3": "ワンクリック保存", "guide_step3_desc": "リストをタップしてダウンロードを開始。ファイルはアプリ内に保存されます。",
+            "faq_title": "よくある質問",
+            "faq_q1": "SnapSaverは無料ですか？", "faq_a1": "はい、コア機能は完全に無料です。広告なしのProバージョンも提供しています。",
+            "faq_q2": "対応サイトは？", "faq_a2": "HLS (m3u8) や MP4 などの汎用プロトコルをサポートしています。",
+            "faq_q3": "登録は必要ですか？", "faq_a3": "アカウントは必要ありません。プライバシーを優先します。",
+            "cta_title": "高速ダウンロードを体験？", "cta_desc": "今すぐSnapSaverを使ってWebリソースを管理しましょう。",
+            "footer_text": "© 2024 SnapSaver Browser. All rights reserved."
+        },
+        "ko": {
+            "nav_features": "기능", "nav_guide": "가이드", "nav_faq": "FAQ",
+            "hero_title_1": "콘텐츠 발견", "hero_title_2": "즉시 다운로드",
+            "hero_desc": "SnapSaver는 웹페이지의 동영상과 이미지를 자동 감지합니다. 원클릭으로 저장하세요.",
+            "feat_subtitle": "핵심 기능", "feat_title": "다운로더를 위한 설계",
+            "f1_title": "스마트 감지", "f1_desc": "웹페이지의 미디어를 자동 감지합니다. M3U8, MP4 지원.",
+            "f2_title": "광범위한 지원", "f2_desc": "수천 개의 웹사이트 지원. 주류 비디오 및 오디오 형식 호환.",
+            "f3_title": "로그인 필요 없음", "f3_desc": "가입이 필요 없습니다. 계정 연동 없이 즉시 다운로드를 시작하세요.",
+            "f4_title": "3배 빠른 속도", "f4_desc": "멀티스레드 기술로 다운로드 속도가 최대 300% 향상됩니다.",
+            "f5_title": "파일 관리자", "f5_desc": "강력한 파일 관리자 내장. 압축/해제, 이름 변경 및 정리.",
+            "f6_title": "시크릿 모드", "f6_desc": "비공개 브라우징. 종료 시 기록, 쿠키 및 캐시가 자동 삭제됩니다.",
+            "f7_title": "무료 사용", "f7_desc": "핵심 기능은 영원히 100% 무료입니다. 장벽 없이 인터넷을 즐기세요.",
+            "f8_title": "20개국 언어", "f8_desc": "전 세계를 위한 현지화. 20개 이상의 언어를 기본 지원합니다.",
+            "guide_title": "다운로드 3단계",
+            "guide_step1": "웹사이트 탐색", "guide_step1_desc": "내장 브라우저를 사용하여 좋아하는 사이트를 방문하세요.",
+            "guide_step2": "자동 감지", "guide_step2_desc": "미디어가 감지되면 다운로드 아이콘이 자동으로 켜집니다.",
+            "guide_step3": "원클릭 저장", "guide_step3_desc": "목록을 탭하여 다운로드를 시작하세요. 파일은 앱에 저장됩니다.",
+            "faq_title": "자주 묻는 질문",
+            "faq_q1": "SnapSaver는 무료인가요?", "faq_a1": "네, 핵심 기능은 완전히 무료입니다. 광고 없는 Pro 버전도 제공합니다.",
+            "faq_q2": "어떤 사이트가 지원되나요?", "faq_a2": "HLS (m3u8) 및 MP4와 같은 범용 프로토콜을 지원합니다.",
+            "faq_q3": "가입해야 하나요?", "faq_a3": "계정이 필요 없습니다. 우리는 개인 정보를 최우선으로 생각합니다.",
+            "cta_title": "다운로드를 시작하세요", "cta_desc": "지금 SnapSaver로 웹 리소스를 관리하세요.",
+            "footer_text": "© 2024 SnapSaver Browser. All rights reserved."
+        },
+        "es": {
+            "nav_features": "Funciones", "nav_guide": "Guía", "nav_faq": "FAQ",
+            "hero_title_1": "Descubre todo.", "hero_title_2": "Descarga ya.",
+            "hero_desc": "SnapSaver detecta automáticamente videos e imágenes. Un clic para guardar sin conexión.",
+            "feat_subtitle": "Potencia", "feat_title": "Diseñado para descargar",
+            "f1_title": "Detector Inteligente", "f1_desc": "Detecta medios en páginas web. Soporta M3U8, MP4 e imágenes.",
+            "f2_title": "Soporte Masivo", "f2_desc": "Compatible con miles de sitios web y formatos de video principales.",
+            "f3_title": "Sin Registro", "f3_desc": "No necesitas cuenta. Comienza a descargar al instante.",
+            "f4_title": "Velocidad x3", "f4_desc": "La tecnología multihilo aumenta la velocidad hasta un 300%.",
+            "f5_title": "Gestor de Archivos", "f5_desc": "Gestor potente integrado. Descomprime, renombra y organiza.",
+            "f6_title": "Modo Incógnito", "f6_desc": "Navega en privado. El historial y las cookies se borran al salir.",
+            "f7_title": "Gratis y Libre", "f7_desc": "Funciones principales 100% gratis para siempre.",
+            "f8_title": "20+ Idiomas", "f8_desc": "Localizado para el mundo. Soporte nativo para más de 20 idiomas.",
+            "guide_title": "3 Pasos para Descargar",
+            "guide_step1": "Navegar", "guide_step1_desc": "Usa el navegador integrado para visitar tus sitios favoritos.",
+            "guide_step2": "Detección Auto", "guide_step2_desc": "El icono de descarga se ilumina cuando se detectan medios.",
+            "guide_step3": "Un Clic", "guide_step3_desc": "Toca para descargar. Los archivos se guardan en el gestor.",
+            "faq_title": "Preguntas Frecuentes",
+            "faq_q1": "¿Es gratis?", "faq_a1": "Sí, las funciones principales son gratis. Ofrecemos una versión Pro sin anuncios.",
+            "faq_q2": "¿Qué sitios?", "faq_a2": "Soportamos protocolos universales como HLS (m3u8) y MP4.",
+            "faq_q3": "¿Necesito registro?", "faq_a3": "No se requiere cuenta. Priorizamos tu privacidad.",
+            "cta_title": "¿Listo para la velocidad?", "cta_desc": "Únete a millones de usuarios hoy.",
+            "footer_text": "© 2024 SnapSaver Browser. Reservados todos los derechos."
+        },
+        "fr": {
+            "nav_features": "Fonctions", "nav_guide": "Guide", "nav_faq": "FAQ",
+            "hero_title_1": "Découvrez tout.", "hero_title_2": "Téléchargez vite.",
+            "hero_desc": "SnapSaver détecte auto les vidéos et images. Un clic pour sauvegarder hors ligne.",
+            "feat_subtitle": "Puissance", "feat_title": "Conçu pour télécharger",
+            "f1_title": "Détection Smart", "f1_desc": "Détecte les médias sur le Web. Supporte M3U8, MP4 et images.",
+            "f2_title": "Support Massif", "f2_desc": "Compatible avec des milliers de sites et formats vidéo.",
+            "f3_title": "Sans Connexion", "f3_desc": "Aucune inscription requise. Téléchargez instantanément.",
+            "f4_title": "Vitesse x3", "f4_desc": "La technologie multi-thread augmente la vitesse de 300%.",
+            "f5_title": "Gestionnaire", "f5_desc": "Gestionnaire puissant intégré. Décompressez et organisez.",
+            "f6_title": "Mode Incognito", "f6_desc": "Naviguez en privé. Historique et cookies effacés à la sortie.",
+            "f7_title": "Gratuit", "f7_desc": "Fonctionnalités de base 100% gratuites pour toujours.",
+            "f8_title": "20+ Langues", "f8_desc": "Localisé pour le monde. Support natif de 20+ langues.",
+            "guide_title": "3 Étapes Simples",
+            "guide_step1": "Naviguer", "guide_step1_desc": "Utilisez le navigateur intégré pour visiter vos sites.",
+            "guide_step2": "Détection Auto", "guide_step2_desc": "L'icône s'allume automatiquement lors de la détection.",
+            "guide_step3": "Un Clic", "guide_step3_desc": "Touchez pour télécharger. Fichiers enregistrés dans l'app.",
+            "faq_title": "Questions Fréquentes",
+            "faq_q1": "Est-ce gratuit ?", "faq_a1": "Oui, totalement gratuit. Version Pro disponible sans pub.",
+            "faq_q2": "Quels sites ?", "faq_a2": "Support des protocoles universels HLS (m3u8) et MP4.",
+            "faq_q3": "Inscription ?", "faq_a3": "Aucun compte nécessaire. Votre vie privée est prioritaire.",
+            "cta_title": "Prêt pour la vitesse ?", "cta_desc": "Rejoignez des millions d'utilisateurs aujourd'hui.",
+            "footer_text": "© 2024 SnapSaver Browser. Tous droits réservés."
+        },
+        "de": {
+            "nav_features": "Funktionen", "nav_guide": "Anleitung", "nav_faq": "FAQ",
+            "hero_title_1": "Inhalte finden.", "hero_title_2": "Sofort laden.",
+            "hero_desc": "SnapSaver erkennt Videos und Bilder automatisch. Ein Klick zum Speichern offline.",
+            "feat_subtitle": "Kernkraft", "feat_title": "Für Downloader gebaut",
+            "f1_title": "Smart Sniffer", "f1_desc": "Erkennt Medien auf Webseiten. Unterstützt M3U8, MP4.",
+            "f2_title": "Massiver Support", "f2_desc": "Unterstützt Tausende von Webseiten und Videoformaten.",
+            "f3_title": "Kein Login", "f3_desc": "Keine Registrierung nötig. Sofort ohne Konto laden.",
+            "f4_title": "3x Speed", "f4_desc": "Multi-Thread-Technologie erhöht die Geschwindigkeit um 300%.",
+            "f5_title": "Dateimanager", "f5_desc": "Integrierter Manager. Entpacken, Umbenennen und Organisieren.",
+            "f6_title": "Inkognito", "f6_desc": "Privat surfen. Verlauf und Cookies werden beim Beenden gelöscht.",
+            "f7_title": "Kostenlos", "f7_desc": "Kernfunktionen sind für immer 100% kostenlos.",
+            "f8_title": "20+ Sprachen", "f8_desc": "Lokalisiert für die Welt. Unterstützung für 20+ Sprachen.",
+            "guide_title": "3 Schritte zum Laden",
+            "guide_step1": "Surfen", "guide_step1_desc": "Nutzen Sie den integrierten Browser für Ihre Seiten.",
+            "guide_step2": "Erkennung", "guide_step2_desc": "Das Download-Symbol leuchtet bei Medienerkennung auf.",
+            "guide_step3": "Ein Klick", "guide_step3_desc": "Tippen zum Laden. Dateien werden in der App gespeichert.",
+            "faq_title": "Häufige Fragen",
+            "faq_q1": "Ist es kostenlos?", "faq_a1": "Ja, absolut. Pro-Version ohne Werbung verfügbar.",
+            "faq_q2": "Welche Seiten?", "faq_a2": "Wir unterstützen HLS (m3u8) und MP4 Protokolle.",
+            "faq_q3": "Registrierung?", "faq_a3": "Kein Konto erforderlich. Privatsphäre hat Vorrang.",
+            "cta_title": "Bereit für Speed?", "cta_desc": "Schließen Sie sich heute Millionen von Nutzern an.",
+            "footer_text": "© 2024 SnapSaver Browser. Alle Rechte vorbehalten."
+        },
+        "ru": {
+            "nav_features": "Функции", "nav_guide": "Гайд", "nav_faq": "FAQ",
+            "hero_title_1": "Находи контент.", "hero_title_2": "Скачивай мгновенно.",
+            "hero_desc": "SnapSaver автоматически находит видео и фото. Скачивайте одним кликом.",
+            "feat_subtitle": "Мощь", "feat_title": "Создан для загрузок",
+            "f1_title": "Умный сниффер", "f1_desc": "Авто-обнаружение медиа. Поддержка M3U8, MP4.",
+            "f2_title": "Поддержка сайтов", "f2_desc": "Совместимость с тысячами сайтов и видеоформатов.",
+            "f3_title": "Без входа", "f3_desc": "Регистрация не нужна. Скачивайте анонимно.",
+            "f4_title": "Скорость 3x", "f4_desc": "Многопоточная технология ускоряет загрузку на 300%.",
+            "f5_title": "Файловый менеджер", "f5_desc": "Встроенный менеджер. Распаковка и переименование.",
+            "f6_title": "Инкогнито", "f6_desc": "Приватный просмотр. История удаляется при выходе.",
+            "f7_title": "Бесплатно", "f7_desc": "Основные функции бесплатны навсегда.",
+            "f8_title": "20+ языков", "f8_desc": "Локализация для всего мира. Поддержка 20+ языков.",
+            "guide_title": "3 шага к загрузке",
+            "guide_step1": "Браузер", "guide_step1_desc": "Используйте встроенный браузер для посещения сайтов.",
+            "guide_step2": "Авто-поиск", "guide_step2_desc": "Иконка загрузки загорается при обнаружении видео.",
+            "guide_step3": "Скачать", "guide_step3_desc": "Нажмите для загрузки. Файлы сохраняются в приложении.",
+            "faq_title": "Вопросы и ответы",
+            "faq_q1": "Это бесплатно?", "faq_a1": "Да. Есть Pro версия без рекламы.",
+            "faq_q2": "Какие сайты?", "faq_a2": "Мы поддерживаем протоколы HLS (m3u8) и MP4.",
+            "faq_q3": "Нужен аккаунт?", "faq_a3": "Нет. Мы ценим вашу конфиденциальность.",
+            "cta_title": "Готовы к скорости?", "cta_desc": "Присоединяйтесь к миллионам пользователей SnapSaver.",
+            "footer_text": "© 2024 SnapSaver Browser. Все права защищены."
+        },
+        "pt": {
+            "nav_features": "Recursos", "nav_guide": "Guia", "nav_faq": "FAQ",
+            "hero_title_1": "Descubra tudo.", "hero_title_2": "Baixe agora.",
+            "hero_desc": "SnapSaver detecta vídeos e imagens automaticamente. Um clique para salvar.",
+            "feat_subtitle": "Poder", "feat_title": "Feito para baixar",
+            "f1_title": "Detector Smart", "f1_desc": "Detecta mídia em páginas da web. Suporta M3U8, MP4.",
+            "f2_title": "Suporte Massivo", "f2_desc": "Compatível com milhares de sites e formatos.",
+            "f3_title": "Sem Login", "f3_desc": "Sem registro. Comece a baixar instantaneamente.",
+            "f4_title": "Velocidade 3x", "f4_desc": "Tecnologia multithread aumenta a velocidade em 300%.",
+            "f5_title": "Gerenciador", "f5_desc": "Gerenciador potente. Descompacte e organize arquivos.",
+            "f6_title": "Modo Incógnito", "f6_desc": "Navegue em privado. Histórico apagado ao sair.",
+            "f7_title": "Grátis", "f7_desc": "Recursos principais 100% gratuitos para sempre.",
+            "f8_title": "20+ Idiomas", "f8_desc": "Suporte nativo para mais de 20 idiomas.",
+            "guide_title": "3 Passos",
+            "guide_step1": "Navegar", "guide_step1_desc": "Use o navegador integrado para visitar sites.",
+            "guide_step2": "Detecção Auto", "guide_step2_desc": "O ícone acende quando mídia é detectada.",
+            "guide_step3": "Salvar", "guide_step3_desc": "Toque para baixar. Arquivos salvos no app.",
+            "faq_title": "Perguntas Frequentes",
+            "faq_q1": "É grátis?", "faq_a1": "Sim. Oferecemos versão Pro sem anúncios.",
+            "faq_q2": "Quais sites?", "faq_a2": "Suportamos protocolos universais HLS (m3u8) e MP4.",
+            "faq_q3": "Preciso de conta?", "faq_a3": "Não. Priorizamos sua privacidade.",
+            "cta_title": "Pronto para baixar?", "cta_desc": "Junte-se a milhões de usuários hoje.",
+            "footer_text": "© 2024 SnapSaver Browser. Todos os direitos reservados."
+        },
+        "it": {
+            "nav_features": "Funzioni", "nav_guide": "Guida", "nav_faq": "FAQ",
+            "hero_title_1": "Scopri contenuti.", "hero_title_2": "Scarica subito.",
+            "hero_desc": "SnapSaver rileva automaticamente video e immagini. Un clic per salvare offline.",
+            "feat_subtitle": "Potenza", "feat_title": "Progettato per scaricare",
+            "f1_title": "Smart Sniffer", "f1_desc": "Rileva media sulle pagine web. Supporta M3U8, MP4.",
+            "f2_title": "Supporto Massiccio", "f2_desc": "Compatibile con migliaia di siti e formati video.",
+            "f3_title": "Nessun Login", "f3_desc": "Nessuna registrazione necessaria. Scarica istantaneamente.",
+            "f4_title": "Velocità 3x", "f4_desc": "La tecnologia multi-thread aumenta la velocità del 300%.",
+            "f5_title": "Gestore File", "f5_desc": "Gestore integrato. Decomprimi e organizza i file.",
+            "f6_title": "Incognito", "f6_desc": "Naviga in privato. Cronologia cancellata all'uscita.",
+            "f7_title": "Gratuito", "f7_desc": "Funzioni principali 100% gratis per sempre.",
+            "f8_title": "20+ Lingue", "f8_desc": "Localizzato per il mondo. Supporto per 20+ lingue.",
+            "guide_title": "3 Passaggi",
+            "guide_step1": "Naviga", "guide_step1_desc": "Usa il browser integrato per visitare i siti.",
+            "guide_step2": "Rilevamento", "guide_step2_desc": "L'icona si accende quando vengono rilevati media.",
+            "guide_step3": "Salva", "guide_step3_desc": "Tocca per scaricare. File salvati nell'app.",
+            "faq_title": "Domande Frequenti",
+            "faq_q1": "È gratuito?", "faq_a1": "Sì. Versione Pro disponibile senza pubblicità.",
+            "faq_q2": "Quali siti?", "faq_a2": "Supportiamo protocolli universali HLS (m3u8) e MP4.",
+            "faq_q3": "Serve un account?", "faq_a3": "No. La tua privacy è la priorità.",
+            "cta_title": "Pronto a scaricare?", "cta_desc": "Unisciti a milioni di utenti oggi.",
+            "footer_text": "© 2024 SnapSaver Browser. Tutti i diritti riservati."
+        },
+        "id": {
+            "nav_features": "Fitur", "nav_guide": "Panduan", "nav_faq": "FAQ",
+            "hero_title_1": "Temukan Konten.", "hero_title_2": "Unduh Instan.",
+            "hero_desc": "SnapSaver mendeteksi video dan gambar secara otomatis. Satu klik untuk menyimpan.",
+            "feat_subtitle": "Fitur Inti", "feat_title": "Dibuat untuk Mengunduh",
+            "f1_title": "Pelacak Cerdas", "f1_desc": "Mendeteksi media di halaman web. Mendukung M3U8, MP4.",
+            "f2_title": "Dukungan Luas", "f2_desc": "Kompatibel dengan ribuan situs web dan format video.",
+            "f3_title": "Tanpa Login", "f3_desc": "Tidak perlu registrasi. Mulai mengunduh secara instan.",
+            "f4_title": "Kecepatan 3x", "f4_desc": "Teknologi multi-thread meningkatkan kecepatan hingga 300%.",
+            "f5_title": "Manajer File", "f5_desc": "Manajer bawaan yang kuat. Ekstrak dan atur file.",
+            "f6_title": "Mode Penyamaran", "f6_desc": "Jelajah secara pribadi. Riwayat dihapus saat keluar.",
+            "f7_title": "Gratis & Bebas", "f7_desc": "Fitur utama 100% gratis selamanya.",
+            "f8_title": "20+ Bahasa", "f8_desc": "Dukungan asli untuk lebih dari 20 bahasa.",
+            "guide_title": "3 Langkah Mudah",
+            "guide_step1": "Jelajah", "guide_step1_desc": "Gunakan browser bawaan untuk mengunjungi situs favorit.",
+            "guide_step2": "Deteksi Otomatis", "guide_step2_desc": "Ikon unduhan menyala saat media terdeteksi.",
+            "guide_step3": "Simpan", "guide_step3_desc": "Ketuk untuk mengunduh. File disimpan di aplikasi.",
+            "faq_title": "Pertanyaan Umum",
+            "faq_q1": "Apakah gratis?", "faq_a1": "Ya. Versi Pro tersedia tanpa iklan.",
+            "faq_q2": "Situs apa saja?", "faq_a2": "Kami mendukung protokol universal HLS (m3u8) dan MP4.",
+            "faq_q3": "Butuh akun?", "faq_a3": "Tidak. Kami memprioritaskan privasi Anda.",
+            "cta_title": "Siap mengunduh?", "cta_desc": "Bergabunglah dengan jutaan pengguna hari ini.",
+            "footer_text": "© 2024 SnapSaver Browser. Hak cipta dilindungi."
+        },
+        "nl": {
+            "nav_features": "Kenmerken", "nav_guide": "Gids", "nav_faq": "FAQ",
+            "hero_title_1": "Ontdek inhoud.", "hero_title_2": "Download direct.",
+            "hero_desc": "SnapSaver detecteert automatisch video's en afbeeldingen. Eén klik om op te slaan.",
+            "feat_subtitle": "Kracht", "feat_title": "Ontworpen voor downloaders",
+            "f1_title": "Slimme Sniffer", "f1_desc": "Detecteert media op webpagina's. Ondersteunt M3U8, MP4.",
+            "f2_title": "Enorme Ondersteuning", "f2_desc": "Compatibel met duizenden websites en videoformaten.",
+            "f3_title": "Geen Login", "f3_desc": "Geen registratie nodig. Download direct anoniem.",
+            "f4_title": "3x Snelheid", "f4_desc": "Multi-thread technologie verhoogt de snelheid met 300%.",
+            "f5_title": "Bestandsbeheer", "f5_desc": "Ingebouwde manager. Uitpakken en organiseren.",
+            "f6_title": "Incognito", "f6_desc": "Privé browsen. Geschiedenis gewist bij afsluiten.",
+            "f7_title": "Gratis", "f7_desc": "Kernfuncties zijn voor altijd 100% gratis.",
+            "f8_title": "20+ Talen", "f8_desc": "Ondersteuning voor meer dan 20 talen.",
+            "guide_title": "3 Stappen",
+            "guide_step1": "Browsen", "guide_step1_desc": "Gebruik de ingebouwde browser om sites te bezoeken.",
+            "guide_step2": "Detectie", "guide_step2_desc": "Downloadpictogram licht op wanneer media wordt gedetecteerd.",
+            "guide_step3": "Opslaan", "guide_step3_desc": "Tik om te downloaden. Bestanden opgeslagen in de app.",
+            "faq_title": "Veelgestelde Vragen",
+            "faq_q1": "Is het gratis?", "faq_a1": "Ja. Pro-versie beschikbaar zonder advertenties.",
+            "faq_q2": "Welke sites?", "faq_a2": "We ondersteunen universele protocollen HLS (m3u8) en MP4.",
+            "faq_q3": "Account nodig?", "faq_a3": "Nee. Geen account vereist.",
+            "cta_title": "Klaar voor snelheid?", "cta_desc": "Sluit je vandaag nog aan bij miljoenen gebruikers.",
+            "footer_text": "© 2024 SnapSaver Browser. Alle rechten voorbehouden."
+        },
+        "bg": {
+            "nav_features": "Функции", "nav_guide": "Ръководство", "nav_faq": "ЧЗВ",
+            "hero_title_1": "Открий съдържание.", "hero_title_2": "Изтегли веднага.",
+            "hero_desc": "SnapSaver автоматично открива видео и снимки. Един клик за запазване.",
+            "feat_title": "Създаден за изтегляне", "f1_title": "Умен скенер", "f1_desc": "Открива медия на страници. Поддържа M3U8, MP4.",
+            "f3_title": "Без вход", "f3_desc": "Няма нужда от регистрация. Започнете веднага.",
+            "f4_title": "3x Скорост", "f4_desc": "Технологията multi-thread увеличава скоростта с 300%.",
+            "f5_title": "Файлов мениджър", "f6_title": "Инкогнито", "f7_title": "Безплатно", "f8_title": "20+ Езика",
+            "guide_title": "3 Стъпки", "cta_title": "Готови ли сте?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "cs": {
+            "nav_features": "Funkce", "nav_guide": "Návod", "nav_faq": "FAQ",
+            "hero_title_1": "Objevte obsah.", "hero_title_2": "Ihned stahujte.",
+            "hero_desc": "SnapSaver automaticky detekuje videa a obrázky. Jedno kliknutí pro uložení.",
+            "feat_title": "Určeno pro stahování", "f1_title": "Chytrá detekce", "f1_desc": "Detekuje média na stránkách. Podpora M3U8, MP4.",
+            "f3_title": "Bez přihlášení", "f3_desc": "Není nutná registrace. Stahujte okamžitě.",
+            "f4_title": "3x Rychlost", "f4_desc": "Vícevláknová technologie zvyšuje rychlost o 300%.",
+            "f5_title": "Správce souborů", "f6_title": "Inkognito", "f7_title": "Zdarma", "f8_title": "20+ Jazyků",
+            "guide_title": "3 Kroky", "cta_title": "Jste připraveni?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "da": {
+            "nav_features": "Funktioner", "nav_guide": "Guide", "nav_faq": "FAQ",
+            "hero_title_1": "Opdag indhold.", "hero_title_2": "Download straks.",
+            "hero_desc": "SnapSaver finder automatisk videoer og billeder. Et klik for at gemme.",
+            "feat_title": "Designet til download", "f1_title": "Smart Sniffer", "f1_desc": "Finder medier på websider. Understøtter M3U8, MP4.",
+            "f3_title": "Ingen login", "f3_desc": "Ingen registrering nødvendig. Start med det samme.",
+            "f4_title": "3x Hastighed", "f4_desc": "Multi-thread teknologi øger hastigheden med 300%.",
+            "f5_title": "Filhåndtering", "f6_title": "Inkognito", "f7_title": "Gratis", "f8_title": "20+ Sprog",
+            "guide_title": "3 Trin", "cta_title": "Klar til fart?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "el": {
+            "nav_features": "Λειτουργίες", "nav_guide": "Οδηγός", "nav_faq": "FAQ",
+            "hero_title_1": "Ανακαλύψτε.", "hero_title_2": "Κατεβάστε άμεσα.",
+            "hero_desc": "Το SnapSaver εντοπίζει αυτόματα βίντεο και εικόνες. Ένα κλικ για αποθήκευση.",
+            "feat_title": "Σχεδιασμένο για λήψεις", "f1_title": "Έξυπνη Ανίχνευση", "f1_desc": "Εντοπίζει μέσα σε ιστοσελίδες. Υποστηρίζει M3U8, MP4.",
+            "f3_title": "Χωρίς Σύνδεση", "f3_desc": "Δεν απαιτείται εγγραφή. Ξεκινήστε άμεσα.",
+            "f4_title": "3x Ταχύτητα", "f4_desc": "Η τεχνολογία multi-thread αυξάνει την ταχύτητα κατά 300%.",
+            "f5_title": "Διαχείριση Αρχείων", "f6_title": "Ανώνυμη Περιήγηση", "f7_title": "Δωρεάν", "f8_title": "20+ Γλώσσες",
+            "guide_title": "3 Βήματα", "cta_title": "Έτοιμοι;", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "et": {
+            "nav_features": "Funktsioonid", "nav_guide": "Juhend", "nav_faq": "KKK",
+            "hero_title_1": "Avasta sisu.", "hero_title_2": "Laadi kohe alla.",
+            "hero_desc": "SnapSaver tuvastab automaatselt videod ja pildid. Üks klõps salvestamiseks.",
+            "feat_title": "Loodud allalaadimiseks", "f1_title": "Nutikas tuvastus", "f1_desc": "Tuvastab meedia veebilehtedel. Tugi M3U8, MP4.",
+            "f3_title": "Sisselogimiseta", "f3_desc": "Registreerimine pole vajalik. Alusta kohe.",
+            "f4_title": "3x Kiirus", "f4_desc": "Mitme lõimega tehnoloogia suurendab kiirust 300%.",
+            "f5_title": "Failihaldur", "f6_title": "Inkognito", "f7_title": "Tasuta", "f8_title": "20+ Keelt",
+            "guide_title": "3 Sammu", "cta_title": "Valmis?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "fi": {
+            "nav_features": "Ominaisuudet", "nav_guide": "Opas", "nav_faq": "UKK",
+            "hero_title_1": "Löydä sisältöä.", "hero_title_2": "Lataa heti.",
+            "hero_desc": "SnapSaver tunnistaa videot ja kuvat automaattisesti. Yksi klikkaus tallentaaksesi.",
+            "feat_title": "Tehty lataamiseen", "f1_title": "Älykäs haku", "f1_desc": "Tunnistaa median sivuilla. Tuki M3U8, MP4.",
+            "f3_title": "Ei kirjautumista", "f3_desc": "Ei rekisteröintiä. Lataa heti.",
+            "f4_title": "3x Nopeus", "f4_desc": "Monisäikeinen tekniikka lisää nopeutta 300%.",
+            "f5_title": "Tiedostonhallinta", "f6_title": "Incognito", "f7_title": "Ilmainen", "f8_title": "20+ Kieltä",
+            "guide_title": "3 Vaihetta", "cta_title": "Valmis?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "hu": {
+            "nav_features": "Funkciók", "nav_guide": "Útmutató", "nav_faq": "GYIK",
+            "hero_title_1": "Tartalom felfedezése.", "hero_title_2": "Azonnali letöltés.",
+            "hero_desc": "A SnapSaver automatikusan felismeri a videókat és képeket. Egy kattintás a mentéshez.",
+            "feat_title": "Letöltésre tervezve", "f1_title": "Okos Észlelés", "f1_desc": "Média felismerése weboldalakon. M3U8, MP4 támogatás.",
+            "f3_title": "Nincs bejelentkezés", "f3_desc": "Nincs szükség regisztrációra. Azonnali letöltés.",
+            "f4_title": "3x Sebesség", "f4_desc": "A többszálas technológia 300%-kal növeli a sebességet.",
+            "f5_title": "Fájlkezelő", "f6_title": "Inkognitó", "f7_title": "Ingyenes", "f8_title": "20+ Nyelv",
+            "guide_title": "3 Lépés", "cta_title": "Készen állsz?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "lt": {
+            "nav_features": "Funkcijos", "nav_guide": "Gidas", "nav_faq": "DUK",
+            "hero_title_1": "Atraskite turinį.", "hero_title_2": "Atsisiųskite iškart.",
+            "hero_desc": "SnapSaver automatiškai aptinka vaizdo įrašus ir nuotraukas. Vienas paspaudimas išsaugoti.",
+            "feat_title": "Sukurta siuntimui", "f1_title": "Išmanus aptikimas", "f1_desc": "Aptinka mediją puslapiuose. M3U8, MP4 palaikymas.",
+            "f3_title": "Be prisijungimo", "f3_desc": "Registracija nereikalinga. Siųskitės iškart.",
+            "f4_title": "3x Greitis", "f4_desc": "Daugiagijė technologija padidina greitį 300%.",
+            "f5_title": "Failų tvarkyklė", "f6_title": "Inkognito", "f7_title": "Nemokama", "f8_title": "20+ Kalbų",
+            "guide_title": "3 Žingsniai", "cta_title": "Pasiruošę?", "footer_text": "© 2024 SnapSaver Browser."
+        },
+        "lv": {
+            "nav_features": "Funkcijas", "nav_guide": "Ceļvedis", "nav_faq": "BUJ",
+            "hero_title_1": "Atklājiet saturu.", "hero_title_2": "Lejupielādējiet tūlīt.",
+            "hero_desc": "SnapSaver automātiski nosaka video un attēlus. Viens klikšķis, lai saglabātu.",
+            "feat_title": "Radīts lejupielādei", "f1_title": "Viedā noteikšana", "f1_desc": "Nosaka multividi lapās. Atbalsta M3U8, MP4.",
+            "f3_title": "Bez pieteikšanās", "f3_desc": "Nav nepieciešama reģistrācija. Sāciet tūlīt.",
+            "f4_title": "3x Ātrums", "f4_desc": "Vairākpavedienu tehnoloģija palielina ātrumu par 300%.",
+            "f5_title": "Failu pārvaldnieks", "f6_title": "Inkognito", "f7_title": "Bezmaksas", "f8_title": "20+ Valodas",
+            "guide_title": "3 Soļi", "cta_title": "Gatavs?", "footer_text": "© 2024 SnapSaver Browser."
+        }
+    };
+
+    // Fallback for minor missing keys in smaller languages to prevent blank text
+    const minorLangs = ['bg', 'cs', 'da', 'el', 'et', 'fi', 'hu', 'lt', 'lv'];
+    minorLangs.forEach(lang => {
+        // Fill missing keys with English
+        const current = translations[lang];
+        const base = translations['en'];
+        for (const key in base) {
+            if (!current[key]) {
+                current[key] = base[key];
+            }
+        }
+    });
+
+    function changeLanguage(langCode) {
+        // Logic to handle language fallback (e.g., 'fr-CA' -> 'fr')
+        let selectedLang = langCode;
+        if (!translations[selectedLang]) {
+            selectedLang = selectedLang.split('-')[0];
+        }
+
+        const t = translations[selectedLang] || translations['en'];
+
+        // Sync Select: Find the option that matches or starts with the lang code
+        const select = document.getElementById('lang-select');
+        // Try exact match
+        if (select.querySelector(`option[value="${selectedLang}"]`)) {
+            select.value = selectedLang;
+        } else {
+            // Try fuzzy match for the select value
+            const option = Array.from(select.options).find(opt => opt.value.startsWith(selectedLang));
+            if (option) select.value = option.value;
+        }
+
+        localStorage.setItem('language', selectedLang);
+        document.documentElement.lang = selectedLang;
+
+        // Update Text
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) el.innerText = t[key];
+        });
+    }
+
+    // --- Init Logic (Enhanced Auto-Detection) ---
+    (function initLanguage() {
+        // 1. Check LocalStorage
+        const savedLang = localStorage.getItem('language');
+        if (savedLang && translations[savedLang]) {
+            changeLanguage(savedLang);
+            return;
+        }
+
+        // 2. Check Browser Preferred Languages (Priority List)
+        if (navigator.languages && navigator.languages.length) {
+            for (const lang of navigator.languages) {
+                // Check exact match (e.g., zh-CN)
+                if (translations[lang]) {
+                    changeLanguage(lang);
+                    return;
+                }
+                // Check base match (e.g., fr-CA -> fr)
+                const baseLang = lang.split('-')[0];
+                if (translations[baseLang]) {
+                    changeLanguage(baseLang);
+                    return;
+                }
+            }
+        }
+
+        // 3. Fallback to navigator.language
+        const singleLang = navigator.language || navigator.userLanguage;
+        if (singleLang) {
+            if (translations[singleLang]) {
+                changeLanguage(singleLang);
+                return;
+            }
+            const base = singleLang.split('-')[0];
+            if (translations[base]) {
+                changeLanguage(base);
+                return;
+            }
+        }
+
+        // 4. Default to English
+        changeLanguage('en');
+    })();
+
+    // Mobile Menu
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('hidden'));
+</script>
+</body>
+</html>
