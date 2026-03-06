@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://snapsaver.suansuan.dpdns.org/
+Host: https://snapsaver.suanss.com/
 
 # Sitemaps 指向站点地图位置
-Sitemap: https://snapsaver.suansuan.dpdns.org/sitemap.xml
+Sitemap: https://snapsaver.suanss.com/sitemap.xml
