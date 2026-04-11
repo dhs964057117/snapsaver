@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
-<url>
-  <loc>https://snapsaver.suanss.com/</loc>
-  <!-- lastmod 建议每次更新网站时修改为当天的日期 -->
-  <lastmod>2026-03-01T04:00:00+00:00</lastmod>
-  <changefreq>daily</changefreq>
-  <priority>1.0</priority>
-</url>
-
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>https://snapsaver.suanss.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+<url><loc>https://snapsaver.suanss.com/zh-CN/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/zh-HK/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/ja/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/ko/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/es/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/fr/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/de/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/ru/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/pt/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/it/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/id/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/nl/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/bg/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/cs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/da/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/el/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/et/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/fi/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/hu/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/lt/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://snapsaver.suanss.com/lv/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>
