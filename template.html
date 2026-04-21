@@ -1332,77 +1332,88 @@
         });
 
         function changeLanguage(langCode) {
-            // Logic to handle language fallback (e.g., 'fr-CA' -> 'fr')
             let selectedLang = langCode;
             if (!translations[selectedLang]) {
                 selectedLang = selectedLang.split('-')[0];
             }
-
-            const t = translations[selectedLang] || translations['en'];
-
-            // Sync Select: Find the option that matches or starts with the lang code
-            const select = document.getElementById('lang-select');
-            // Try exact match
-            if (select.querySelector(`option[value="${selectedLang}"]`)) {
-                select.value = selectedLang;
-            } else {
-                // Try fuzzy match for the select value
-                const option = Array.from(select.options).find(opt => opt.value.startsWith(selectedLang));
-                if (option) select.value = option.value;
-            }
+            if (!translations[selectedLang]) selectedLang = 'en';
 
             localStorage.setItem('language', selectedLang);
-            document.documentElement.lang = selectedLang;
 
-            // Update Text
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.innerText = t[key];
-            });
+            // Redirect to the proper URL based on language
+            const newPath = selectedLang === 'en' ? '/' : '/' + selectedLang + '/';
+            const currentPath = window.location.pathname;
+            
+            // Allow local file testing to skip redirect, or if already on correct path
+            if (window.location.protocol !== 'file:' && currentPath !== newPath && currentPath !== newPath.slice(0, -1)) {
+                window.location.href = newPath;
+            } else {
+                // Just sync Select dropdown
+                const select = document.getElementById('lang-select');
+                if (select) {
+                    if (select.querySelector(`option[value="${selectedLang}"]`)) {
+                        select.value = selectedLang;
+                    } else {
+                        const option = Array.from(select.options).find(opt => opt.value.startsWith(selectedLang));
+                        if (option) select.value = option.value;
+                    }
+                }
+            }
         }
 
         // --- Init Logic (Enhanced Auto-Detection) ---
         (function initLanguage() {
-            // 1. Check LocalStorage
+            // 1. Sync dropdown selection with the statically rendered HTML lang 
+            const htmlLang = document.documentElement.lang || 'en';
+            const select = document.getElementById('lang-select');
+            if (select) {
+                if (select.querySelector(`option[value="${htmlLang}"]`)) {
+                    select.value = htmlLang;
+                } else {
+                    const option = Array.from(select.options).find(opt => opt.value.startsWith(htmlLang));
+                    if (option) select.value = option.value;
+                }
+            }
+
+            // 2. STOP HERE if we are already on a localized subpage (e.g. /zh-CN/)
+            // This is CRITICAL for SEO so Googlebot doesn't get JS-redirected back to English!
+            const currentPath = window.location.pathname;
+            if (currentPath !== '/' && currentPath !== '/index.html' && currentPath !== '') {
+                return; 
+            }
+
+            // 3. Only on ROOT: Auto-detect and redirect users
             const savedLang = localStorage.getItem('language');
+            let targetLang = 'en';
+            
             if (savedLang && translations[savedLang]) {
-                changeLanguage(savedLang);
-                return;
-            }
-
-            // 2. Check Browser Preferred Languages (Priority List)
-            if (navigator.languages && navigator.languages.length) {
-                for (const lang of navigator.languages) {
-                    // Check exact match (e.g., zh-CN)
-                    if (translations[lang]) {
-                        changeLanguage(lang);
-                        return;
-                    }
-                    // Check base match (e.g., fr-CA -> fr)
-                    const baseLang = lang.split('-')[0];
-                    if (translations[baseLang]) {
-                        changeLanguage(baseLang);
-                        return;
+                targetLang = savedLang;
+            } else {
+                let detected = null;
+                if (navigator.languages && navigator.languages.length) {
+                    for (const lang of navigator.languages) {
+                        if (translations[lang]) { detected = lang; break; }
+                        const baseLang = lang.split('-')[0];
+                        if (translations[baseLang]) { detected = baseLang; break; }
                     }
                 }
+                if (!detected) {
+                    const singleLang = navigator.language || navigator.userLanguage;
+                    if (singleLang) {
+                        if (translations[singleLang]) detected = singleLang;
+                        else {
+                            const base = singleLang.split('-')[0];
+                            if (translations[base]) detected = base;
+                        }
+                    }
+                }
+                if (detected) targetLang = detected;
             }
 
-            // 3. Fallback to navigator.language
-            const singleLang = navigator.language || navigator.userLanguage;
-            if (singleLang) {
-                if (translations[singleLang]) {
-                    changeLanguage(singleLang);
-                    return;
-                }
-                const base = singleLang.split('-')[0];
-                if (translations[base]) {
-                    changeLanguage(base);
-                    return;
-                }
+            // If their target language is NOT english, redirect from Root to their language folder
+            if (targetLang !== 'en' && window.location.protocol !== 'file:') {
+                window.location.replace('/' + targetLang + '/');
             }
-
-            // 4. Default to English
-            changeLanguage('en');
         })();
 
         // Mobile Menu
