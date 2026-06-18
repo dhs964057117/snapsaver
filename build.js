@@ -53,14 +53,33 @@ function buildPage(lang, contentObj) {
     // Handle meta tags with data-i18n-seo
     html = html.replace(/(<meta[^>]+data-i18n-seo="([^"]+)"[^>]*>)/g, (match, fullTag, key) => {
         // Need to replace the content="..." attribute from fullTag
-        let val = contentObj[key] || translations['en'][key] || "";
+        // Fallback: og_title -> seo_title, og_desc -> seo_desc, twitter_title -> seo_title, twitter_desc -> seo_desc
+        let fallbackKey = key;
+        if (key === 'og_title' || key === 'twitter_title') fallbackKey = 'seo_title';
+        if (key === 'og_desc' || key === 'twitter_desc') fallbackKey = 'seo_desc';
+        let val = contentObj[key] || contentObj[fallbackKey] || translations['en'][key] || translations['en'][fallbackKey] || "";
         let newTag = fullTag.replace(/content="[^"]*"/, `content="${val}"`);
         return newTag;
+    });
+
+    // Handle JSON-LD script tag with data-i18n-seo="json_ld"
+    html = html.replace(/(<script type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/g, (match, openTag, jsonContent, closeTag) => {
+        // Extract and localize the description field in JSON-LD
+        let localizedDesc = contentObj['seo_desc'] || translations['en']['seo_desc'] || "";
+        let localizedUrl = lang === 'en' ? "https://snapsaver.suanss.com/" : `https://snapsaver.suanss.com/${lang}/`;
+        let newJson = jsonContent
+            .replace(/"description":\s*"[^"]*"/, `"description": "${localizedDesc}"`)
+            .replace(/"url":\s*"https:\/\/snapsaver\.suanss\.com\/"/, `"url": "${localizedUrl}"`);
+        return openTag + newJson + closeTag;
     });
 
     // Add canonical URL based on language if this is a subfolder
     let canonicalVal = lang === 'en' ? "https://snapsaver.suanss.com/" : `https://snapsaver.suanss.com/${lang}/`;
     html = html.replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${canonicalVal}">`);
+
+    // Update og:url and twitter:url to match canonical
+    html = html.replace(/<meta property="og:url" content="[^"]+">/, `<meta property="og:url" content="${canonicalVal}">`);
+    html = html.replace(/<meta name="twitter:url" content="[^"]+">/, `<meta name="twitter:url" content="${canonicalVal}">`);
 
     return html;
 }

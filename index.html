@@ -48,33 +48,34 @@
     <!-- SEO: Open Graph / Facebook / WeChat Share -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://snapsaver.suanss.com/">
-    <meta property="og:title" content="SnapSaver Browser - Discover Content. Download Instantly.">
+    <meta property="og:title" content="SnapSaver Browser - Best Free Video Downloader & M3U8 Sniffer" data-i18n-seo="og_title">
     <meta property="og:description"
-        content="Automatically detect web videos, images, and files. Enjoy a blazing-fast download experience on Android.">
-    <meta property="og:image" content="https://snapsaver.suanss.com/preview-image.jpg">
+        content="SnapSaver is a powerful media sniffer browser for Android. Automatically detect and download m3u8, mp4 videos, music, and images. Private, free, and secure." data-i18n-seo="og_desc">
+    <meta property="og:image" content="https://snapsaver.suanss.com/preview-image.PNG">
 
     <!-- SEO: Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://snapsaver.suanss.com/">
-    <meta name="twitter:title" content="SnapSaver Browser - Ultimate Video Downloader">
-    <meta name="twitter:description" content="Browse, detect, and download videos instantly with SnapSaver.">
-    <meta name="twitter:image" content="https://snapsaver.suanss.com/preview-image.jpg">
+    <meta name="twitter:title" content="SnapSaver Browser - Best Free Video Downloader & M3U8 Sniffer" data-i18n-seo="twitter_title">
+    <meta name="twitter:description" content="SnapSaver is a powerful media sniffer browser for Android. Automatically detect and download m3u8, mp4 videos, music, and images. Private, free, and secure." data-i18n-seo="twitter_desc">
+    <meta name="twitter:image" content="https://snapsaver.suanss.com/preview-image.PNG">
     <meta name="google-site-verification" content="AQ3MwrTJp756PUgT9m7FqyeHxm7WXyogVn3G2nBeihA" />
 
     <!-- SEO: Structured Data (JSON-LD) for Software App -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-seo="json_ld">
         {
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": "SnapSaver Browser",
             "operatingSystem": "Android",
             "applicationCategory": "BrowserApplication",
+            "url": "https://snapsaver.suanss.com/",
             "offers": {
                 "@type": "Offer",
                 "price": "0",
                 "priceCurrency": "USD"
             },
-            "description": "A powerful browser with built-in media sniffer to download videos, music, and images from any website.",
+            "description": "SnapSaver is a powerful media sniffer browser for Android. Automatically detect and download m3u8, mp4 videos, music, and images. Private, free, and secure.",
             "aggregateRating": {
                 "@type": "AggregateRating",
                 "ratingValue": "4.8",
@@ -2027,7 +2028,14 @@
                 return; 
             }
 
-            // 3. Only on ROOT: Auto-detect and redirect users
+            // 3. Detect bots and skip redirect to avoid cloaking issues
+            const userAgent = navigator.userAgent || '';
+            const isBot = /bot|crawl|spider|slurp|mediapartners|facebookexternalhit|whatsapp|twitter|linkedinbot|googlebot|bingbot|yandex|baidu/i.test(userAgent);
+            if (isBot) {
+                return;
+            }
+
+            // 4. Only on ROOT: Auto-detect and redirect real users
             const savedLang = localStorage.getItem('language');
             let targetLang = 'en';
             
