@@ -17,6 +17,18 @@ const translationsStr = transMatch[1];
 let translations = {};
 eval(`translations = ${translationsStr};`);
 
+// Merge the extra content block (formats / m3u8 / extended FAQ keys) into translations
+const extraMatch = templateHTML.match(/const extraContent = (\{[\s\S]*?\});\s*\/\/\s*END_EXTRA_CONTENT/);
+if (!extraMatch) {
+    console.error("Could not find extraContent block in template.html");
+    process.exit(1);
+}
+let extraContent = {};
+eval(`extraContent = ${extraMatch[1]};`);
+for (const lc of Object.keys(extraContent)) {
+    translations[lc] = Object.assign(translations[lc] || {}, extraContent[lc]);
+}
+
 const langs = Object.keys(translations);
 
 // Added SEO fields directly via template.html translations
@@ -104,3 +116,28 @@ for (const lang of langs) {
 }
 
 console.log("Build complete.");
+
+// Regenerate sitemap.xml: fresh lastmod, hreflang alternates for the locale cluster, plus the privacy page.
+const today = new Date().toISOString().slice(0, 10);
+function urlBlock(loc, priority, withAlternates) {
+    const lines = ['  <url>', `    <loc>${loc}</loc>`];
+    if (withAlternates) {
+        for (const l of langs) {
+            lines.push(`    <xhtml:link rel="alternate" hreflang="${l}" href="https://snapsaver.suanss.com/${l === 'en' ? '' : l + '/'}" />`);
+        }
+        lines.push('    <xhtml:link rel="alternate" hreflang="x-default" href="https://snapsaver.suanss.com/" />');
+    }
+    lines.push(`    <lastmod>${today}</lastmod>`, '    <changefreq>weekly</changefreq>', `    <priority>${priority}</priority>`, '  </url>');
+    return lines.join('\n');
+}
+
+const sitemapXml = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+    urlBlock('https://snapsaver.suanss.com/', '1.0', true),
+    ...langs.filter(l => l !== 'en').map(l => urlBlock(`https://snapsaver.suanss.com/${l}/`, '0.8', true)),
+    urlBlock('https://snapsaver.suanss.com/privacy/', '0.3', false),
+    '</urlset>'
+].join('\n');
+fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml, 'utf8');
+console.log("Regenerated sitemap.xml");

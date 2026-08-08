@@ -1,9 +1,6 @@
-# * 允许所有搜索引擎爬虫访问
+# Allow all search engines to crawl everything
 User-agent: *
 Allow: /
 
-# Host
-Host: https://snapsaver.suanss.com/
-
-# Sitemaps 指向站点地图位置
+# Sitemap location
 Sitemap: https://snapsaver.suanss.com/sitemap.xml
