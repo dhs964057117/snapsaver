@@ -1,0 +1,12 @@
+{
+  "name": "snapsaver-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node build.js && tailwindcss -i styles/input.css -o assets/site.css --minify && node scripts/package-site.js",
+    "check": "node scripts/check-seo.js",
+    "preview": "node scripts/preview.js"
+  },
+  "devDependencies": { "tailwindcss": "3.4.17" },
+  "engines": { "node": ">=20" }
+}

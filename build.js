@@ -1,143 +1,96 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+const { pages, resourceLabels } = require('./scripts/content');
+const { renderArticle } = require('./scripts/render-article');
 
-const templatePath = path.join(__dirname, 'template.html');
-const templateHTML = fs.readFileSync(templatePath, 'utf8');
-
-// The template has a script block with `const translations = { ... };`
-// Match the translations object. Since it's the only one, we can match up to the end of the object.
-const transMatch = templateHTML.match(/const translations = (\{[\s\S]*?\});\s*\/\/\s*Minor langs fallback removed/);
-
-if (!transMatch) {
-    console.error("Could not find translations in template.html");
-    process.exit(1);
-}
-
-const translationsStr = transMatch[1];
-let translations = {};
-eval(`translations = ${translationsStr};`);
-
-// Merge the extra content block (formats / m3u8 / extended FAQ keys) into translations
-const extraMatch = templateHTML.match(/const extraContent = (\{[\s\S]*?\});\s*\/\/\s*END_EXTRA_CONTENT/);
-if (!extraMatch) {
-    console.error("Could not find extraContent block in template.html");
-    process.exit(1);
-}
-let extraContent = {};
-eval(`extraContent = ${extraMatch[1]};`);
-for (const lc of Object.keys(extraContent)) {
-    translations[lc] = Object.assign(translations[lc] || {}, extraContent[lc]);
-}
-
+const ORIGIN = 'https://snapsaver.suanss.com';
+const PLAY = 'https://play.google.com/store/apps/details?id=com.awesome.dhs.tools.snapsave';
+const template = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
+const translations = JSON.parse(fs.readFileSync(path.join(__dirname, 'translations.json'), 'utf8'));
 const langs = Object.keys(translations);
-
-// Added SEO fields directly via template.html translations
-// Generate hreflang tags for ALL supported languages
-let hreflangTags = langs.map(lang => {
-    let urlPath = lang === 'en' ? '' : `${lang}/`;
-    return `<link rel="alternate" hreflang="${lang}" href="https://snapsaver.suanss.com/${urlPath}" />`;
-}).join('\n    ');
-// Add x-default
-hreflangTags += `\n    <link rel="alternate" hreflang="x-default" href="https://snapsaver.suanss.com/" />`;
-
-function buildPage(lang, contentObj) {
-    let html = templateHTML;
-
-    // Inject hreflang
-    html = html.replace('<!-- INJECT_HREFLANG -->', hreflangTags);
-
-    // Update <html lang="en">
-    html = html.replace(/<html lang="[^"]+"/, `<html lang="${lang}"`);
-    
-    // Process tags with data-i18n="xxx"
-    // Using a reliable manual split/replace or regex over the DOM string.
-    // Instead of innerText, we are replacing everything between > and <
-    html = html.replace(/(<[^>]+data-i18n="([^"]+)"[^>]*>)([\s\S]*?)(?=<\/[a-zA-Z0-9]+>)/g, (match, openTag, key, innerContent) => {
-        let val = contentObj[key] || translations['en'][key] || "";
-        return openTag + val;
-    });
-
-    // Handle the <title data-i18n-seo="seo_title">
-    html = html.replace(/(<title data-i18n-seo="seo_title">)([^<]*)(<\/title>)/g, (match, openTag, text, closeTag) => {
-        return openTag + (contentObj['seo_title'] || translations['en']['seo_title']) + closeTag;
-    });
-
-    // Handle meta tags with data-i18n-seo
-    html = html.replace(/(<meta[^>]+data-i18n-seo="([^"]+)"[^>]*>)/g, (match, fullTag, key) => {
-        // Need to replace the content="..." attribute from fullTag
-        // Fallback: og_title -> seo_title, og_desc -> seo_desc, twitter_title -> seo_title, twitter_desc -> seo_desc
-        let fallbackKey = key;
-        if (key === 'og_title' || key === 'twitter_title') fallbackKey = 'seo_title';
-        if (key === 'og_desc' || key === 'twitter_desc') fallbackKey = 'seo_desc';
-        let val = contentObj[key] || contentObj[fallbackKey] || translations['en'][key] || translations['en'][fallbackKey] || "";
-        let newTag = fullTag.replace(/content="[^"]*"/, `content="${val}"`);
-        return newTag;
-    });
-
-    // Handle JSON-LD script tag with data-i18n-seo="json_ld"
-    html = html.replace(/(<script type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/g, (match, openTag, jsonContent, closeTag) => {
-        // Extract and localize the description field in JSON-LD
-        let localizedDesc = contentObj['seo_desc'] || translations['en']['seo_desc'] || "";
-        let localizedUrl = lang === 'en' ? "https://snapsaver.suanss.com/" : `https://snapsaver.suanss.com/${lang}/`;
-        let newJson = jsonContent
-            .replace(/"description":\s*"[^"]*"/, `"description": "${localizedDesc}"`)
-            .replace(/"url":\s*"https:\/\/snapsaver\.suanss\.com\/"/, `"url": "${localizedUrl}"`);
-        return openTag + newJson + closeTag;
-    });
-
-    // Add canonical URL based on language if this is a subfolder
-    let canonicalVal = lang === 'en' ? "https://snapsaver.suanss.com/" : `https://snapsaver.suanss.com/${lang}/`;
-    html = html.replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${canonicalVal}">`);
-
-    // Update og:url and twitter:url to match canonical
-    html = html.replace(/<meta property="og:url" content="[^"]+">/, `<meta property="og:url" content="${canonicalVal}">`);
-    html = html.replace(/<meta name="twitter:url" content="[^"]+">/, `<meta name="twitter:url" content="${canonicalVal}">`);
-
-    return html;
-}
-
-// Generate files
-function writeHTML(langPath, htmlContent) {
-    const fullDir = path.join(__dirname, langPath);
-    if (!fs.existsSync(fullDir)) {
-        fs.mkdirSync(fullDir, { recursive: true });
-    }
-    fs.writeFileSync(path.join(fullDir, 'index.html'), htmlContent);
-    console.log(`Generated HTML for ${langPath || 'root'}`);
-}
-
-// Ensure the EN build goes to root index.html
-writeHTML('', buildPage('en', translations['en']));
-
-// Generate subfolders for each language
-for (const lang of langs) {
-    if (lang === 'en') continue;
-    writeHTML(lang, buildPage(lang, translations[lang]));
-}
-
-console.log("Build complete.");
-
-// Regenerate sitemap.xml: fresh lastmod, hreflang alternates for the locale cluster, plus the privacy page.
+const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const json = value => JSON.stringify(value, null, 2).replace(/</g, '\\u003c');
+const home = lang => lang === 'en' ? '/' : `/${lang}/`;
+const helpLang = lang => resourceLabels[lang] ? lang : 'en';
+const manifestPath = path.join(__dirname, 'seo-manifest.json');
+const previous = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : {};
+const manifest = {};
+const indexable = [];
 const today = new Date().toISOString().slice(0, 10);
-function urlBlock(loc, priority, withAlternates) {
-    const lines = ['  <url>', `    <loc>${loc}</loc>`];
-    if (withAlternates) {
-        for (const l of langs) {
-            lines.push(`    <xhtml:link rel="alternate" hreflang="${l}" href="https://snapsaver.suanss.com/${l === 'en' ? '' : l + '/'}" />`);
-        }
-        lines.push('    <xhtml:link rel="alternate" hreflang="x-default" href="https://snapsaver.suanss.com/" />');
-    }
-    lines.push(`    <lastmod>${today}</lastmod>`, '    <changefreq>weekly</changefreq>', `    <priority>${priority}</priority>`, '  </url>');
-    return lines.join('\n');
-}
 
-const sitemapXml = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
-    urlBlock('https://snapsaver.suanss.com/', '1.0', true),
-    ...langs.filter(l => l !== 'en').map(l => urlBlock(`https://snapsaver.suanss.com/${l}/`, '0.8', true)),
-    urlBlock('https://snapsaver.suanss.com/privacy/', '0.3', false),
-    '</urlset>'
-].join('\n');
-fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapXml, 'utf8');
-console.log("Regenerated sitemap.xml");
+function alternates(variants) {
+  return Object.entries({ ...variants, 'x-default': variants.en }).map(([lang, url]) =>
+    `<link rel="alternate" hreflang="${lang}" href="${ORIGIN}${url}">`).join('\n    ');
+}
+function record(url, html, variants) {
+  const hash = crypto.createHash('sha256').update(html).digest('hex');
+  const lastmod = previous[url]?.hash === hash ? previous[url].lastmod : today;
+  manifest[url] = { hash, lastmod };
+  indexable.push({ url, lastmod, variants });
+}
+function save(url, html, variants) {
+  const file = `${url === '/' ? '' : url.slice(1)}index.html`;
+  const fullPath = path.join(__dirname, file);
+  fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+  fs.writeFileSync(fullPath, html, 'utf8');
+  record(url, html, variants);
+}
+function resourceLinks(lang) {
+  const activeLang = helpLang(lang);
+  const labels = resourceLabels[activeLang];
+  return pages.filter(p => p.lang === activeLang).map((p, i) =>
+    `<a href="${p.path}"${activeLang !== lang ? ' hreflang="en" lang="en"' : ''} class="text-brand-600 dark:text-brand-400 underline underline-offset-4">${escape(labels.links[i])}${activeLang !== lang ? ' (English)' : ''}</a>`).join('\n');
+}
+const homeVariants = Object.fromEntries(langs.map(lang => [lang, home(lang)]));
+for (const lang of langs) {
+  const content = translations[lang];
+  let html = template.replace(/<html lang="[^"]+"/, `<html lang="${lang}"`);
+  html = html.replace('<!-- INJECT_HREFLANG -->', alternates(homeVariants));
+  html = html.replace(/(<([a-z][a-z0-9]*)\b[^>]*data-i18n="([^"]+)"[^>]*>)[\s\S]*?(<\/\2>)/gi,
+    (match, open, tag, key, close) => {
+      if (!Object.hasOwn(content, key)) throw new Error(`Missing ${lang}.${key}`);
+      return open + escape(content[key]) + close;
+    });
+  html = html.replace(/(<title[^>]*>)[\s\S]*?(<\/title>)/, `$1${escape(content.seo_title)}$2`);
+  html = html.replace(/<meta\b[^>]*data-i18n-seo="([^"]+)"[^>]*>/g, (tag, key) => {
+    const fallback = /title/.test(key) ? 'seo_title' : 'seo_desc';
+    return tag.replace(/content="[^"]*"/, `content="${escape(content[key] || content[fallback])}"`);
+  });
+  const canonical = ORIGIN + home(lang);
+  html = html.replace(/(<link rel="canonical" href=")[^"]+/, `$1${canonical}`)
+    .replace(/(<meta property="og:url" content=")[^"]+/, `$1${canonical}`)
+    .replace(/(<meta name="twitter:url" content=")[^"]+/, `$1${canonical}`);
+  html = html.replace('<!-- INJECT_STRUCTURED_DATA -->', `<script type="application/ld+json">${json({
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, name: 'SnapSaver', url: `${ORIGIN}/` },
+      { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: content.seo_title,
+        description: content.seo_desc, inLanguage: lang, isPartOf: { '@id': `${ORIGIN}/#website` }, mainEntity: { '@id': `${canonical}#app` } },
+      { '@type': 'MobileApplication', '@id': `${canonical}#app`, name: 'SnapSaver', url: canonical,
+        operatingSystem: 'Android 7.0 or later', applicationCategory: 'UtilitiesApplication', inLanguage: lang,
+        description: content.hero_desc, downloadUrl: PLAY, installUrl: PLAY, sameAs: [PLAY],
+        image: `${ORIGIN}/preview-image.jpg`, screenshot: ['browse-web-fast.jpg', 'find-download.jpg', 'manage-play.jpg'].map(p => `${ORIGIN}/${p}`),
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', url: PLAY } }
+    ]
+  })}</script>`);
+  html = html.replace(/onchange="changeLanguage\(this.value\)"/g, 'data-language-select')
+    .replace(/<option value="([^"]+)"/g, (match, optionLang) =>
+      `<option value="${optionLang}" data-url="${home(optionLang)}"${optionLang === lang ? ' selected' : ''}`);
+  const labels = resourceLabels[helpLang(lang)];
+  html = html.replace('<!-- INJECT_RESOURCES -->', `<section class="py-16 bg-white dark:bg-dark-bg"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><h2 class="text-2xl font-bold mb-6"${helpLang(lang) !== lang ? ' lang="en"' : ''}>${escape(labels.title)}</h2><nav class="flex flex-wrap gap-6" aria-label="${escape(labels.title)}">${resourceLinks(lang)}</nav></div></section>`)
+    .replace('<!-- INJECT_HELP_LINKS -->', resourceLinks(lang));
+  save(home(lang), html, homeVariants);
+}
+for (const page of pages) {
+  const variants = Object.fromEntries(pages.filter(p => p.group === page.group).map(p => [p.lang, p.path]));
+  save(page.path, renderArticle(page, { variants, alternates, resourceLinks, resourceLabels, home, escape, json, ORIGIN, PLAY }), variants);
+}
+record('/privacy/', fs.readFileSync(path.join(__dirname, 'privacy/index.html'), 'utf8'));
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${indexable.map(({ url, lastmod, variants }) => `  <url>\n    <loc>${ORIGIN}${url}</loc>\n    <lastmod>${lastmod}</lastmod>${variants ? '\n' + Object.entries({ ...variants, 'x-default': variants.en }).map(([lang, href]) => `    <xhtml:link rel="alternate" hreflang="${lang}" href="${ORIGIN}${href}" />`).join('\n') : ''}\n  </url>`).join('\n')}
+</urlset>\n`;
+fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemap);
+fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+console.log(`Built ${indexable.length} indexable pages. Sitemap dates change only with page content.`);
